@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Android in the Cloud</string>
+
+    <string name="refresh">Atualizar</string>
+
+    <string name="status_ready">Pronto.</string>
+    <string name="status_running">Obtendo dados da nuvem...</string>
+    <string name="status_done">Atualizado :)</string>
+
+
+    <string name="action_settings">Settings</string>
+</resources>
