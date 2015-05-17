@@ -1,5 +1,8 @@
 package com.josenaves.android.cloud;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,9 +12,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
+    // AppCompatActivity --> Material Design guidelines
 
     private Button btRefresh;
     private TextView txtStatus;
@@ -36,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
                 new UpdateWeather().execute();
             }
         });
+        if (!isOnline()) {
+            btRefresh.setEnabled(false);
+            txtStatus.setText(R.string.no_connectivity);
+            Toast.makeText(this, R.string.no_connectivity, Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -66,6 +76,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Verifica se o dispositivo está conectado a Internet
+     * @return true se está conectado; false caso contrário
+     */
+    private boolean isOnline() {
+        ConnectivityManager cm  = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
 
 

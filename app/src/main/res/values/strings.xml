@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Android in the Cloud</string>
 
+    <string name="no_connectivity">O dispositivo não está conectado a Internet!</string>
+
     <string name="refresh">Atualizar</string>
 
     <string name="status_ready">Pronto.</string>
