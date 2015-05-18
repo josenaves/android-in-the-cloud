@@ -36,8 +36,8 @@ public class RecyclerViewForecastAdapter extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(ForecastViewHolder personViewHolder, int i) {
         personViewHolder.date.setText(weatherList.get(i).getDate());
         personViewHolder.description.setText(weatherList.get(i).getForecast());
-        personViewHolder.maximum.setText(String.valueOf(weatherList.get(i).getMaxTemp()));
-        personViewHolder.minimum.setText(String.valueOf(weatherList.get(i).getMinTemp()));
+        personViewHolder.maximum.setText(String.valueOf(weatherList.get(i).getMaxTemp()) + "\u00B0C");
+        personViewHolder.minimum.setText(String.valueOf(weatherList.get(i).getMinTemp()) + "\u00B0C");
     }
 
     @Override

@@ -4,10 +4,10 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/linearLayout"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="false"
         android:layout_alignParentTop="true">
@@ -19,28 +19,31 @@
             android:layout_height="fill_parent" />
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:indeterminate="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="1dp" />
+
     <TextView
         android:id="@+id/txtStatus"
         android:text="@string/status_ready"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/linearLayout"
+        android:layout_below="@+id/progressBar"
         android:layout_marginTop="@dimen/activity_vertical_margin"/>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtStatus"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/activity_vertical_margin" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_forecast"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/progressBar" />
+        android:layout_below="@+id/txtStatus" />
 
     <Button
         android:id="@+id/btRefresh"
