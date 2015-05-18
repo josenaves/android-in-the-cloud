@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by josenaves on 5/17/15.
@@ -23,9 +25,11 @@ public class WeatherHelper {
      * Acessa o webservice do OpenWeatherMap para obter previsão do tempo.
      * @return String contendo o JSON com as informações
      */
-    public Weather getWeather() {
+    public List<Weather> getWeather() {
         String jsonResult = null;
         HttpURLConnection urlConnection = null;
+
+        List<Weather> forecastList = new ArrayList<>();
         Weather weather = null;
 
         try {
@@ -38,9 +42,12 @@ public class WeatherHelper {
             jsonResult = readFromTheCloud(urlConnection.getInputStream());
             Log.d(TAG, "result = " + jsonResult);
 
-            weather = Weather.getFromJson(jsonResult, 0);
-            Log.d(TAG, "Weather = " + weather);
 
+            for (int i = 0; i < 3; i++) {
+                weather = Weather.getFromJson(jsonResult, i);
+                forecastList.add(weather);
+                Log.d(TAG, "Weather = " + weather);
+            }
 
         } catch (MalformedURLException e) {
             Log.e(TAG, "Error ", e);
@@ -55,7 +62,7 @@ public class WeatherHelper {
                 urlConnection.disconnect();
             }
         }
-        return weather;
+        return forecastList;
     }
 
     // Lê um InputStream e converte para uma String.

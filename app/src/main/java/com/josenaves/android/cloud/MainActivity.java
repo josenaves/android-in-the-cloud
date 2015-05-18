@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +17,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -26,6 +31,15 @@ public class MainActivity extends ActionBarActivity {
 
     private Toolbar toolbar;
 
+    private RecyclerViewForecastAdapter adapter;
+
+    private RecyclerView recyclerView;
+
+    private List<Weather> forecastList = new ArrayList<Weather>();
+
+    private WeatherHelper helper = new WeatherHelper();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +48,6 @@ public class MainActivity extends ActionBarActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
 
         txtStatus = (TextView) findViewById(R.id.txtStatus);
         txtStatus.setText(R.string.status_ready);
@@ -55,6 +68,17 @@ public class MainActivity extends ActionBarActivity {
             txtStatus.setText(R.string.no_connectivity);
             Toast.makeText(this, R.string.no_connectivity, Toast.LENGTH_LONG).show();
         }
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_forecast);
+        recyclerView.setHasFixedSize(true);
+
+        // seta um layoutmanager para o recyclerview (obrigatório)
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        // seta o adapter para o recyclerview
+        adapter = new RecyclerViewForecastAdapter(forecastList);
+        recyclerView.setAdapter(adapter);
     }
 
 
@@ -69,23 +93,15 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-/*            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }*/
-
-            WeatherHelper helper = new WeatherHelper();
-            helper.getWeather();
-
+            forecastList = helper.getWeather();
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            adapter.setWeather(forecastList);
             txtStatus.setText(R.string.status_done);
-            progress.setVisibility(View.INVISIBLE);/**/
-
+            progress.setVisibility(View.INVISIBLE);
         }
     }
 

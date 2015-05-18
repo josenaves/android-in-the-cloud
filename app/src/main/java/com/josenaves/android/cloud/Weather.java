@@ -44,6 +44,38 @@ public class Weather {
         this.forecast = jsonDescription.getJSONObject(0).getString("description");
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getForecast() {
+        return forecast;
+    }
+
+    public void setForecast(String forecast) {
+        this.forecast = forecast;
+    }
+
+    public double getMaxTemp() {
+        return maxTemp;
+    }
+
+    public void setMaxTemp(double maxTemp) {
+        this.maxTemp = maxTemp;
+    }
+
+    public double getMinTemp() {
+        return minTemp;
+    }
+
+    public void setMinTemp(double minTemp) {
+        this.minTemp = minTemp;
+    }
+
     @Override
     public String toString() {
         return "Weather{" +
