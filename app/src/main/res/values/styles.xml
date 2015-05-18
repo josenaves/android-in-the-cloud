@@ -5,10 +5,11 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="MaterialTheme.Base" parent="Theme.AppCompat.NoActionBar">
+    <style name="MaterialTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
     </style>
 
 </resources>
