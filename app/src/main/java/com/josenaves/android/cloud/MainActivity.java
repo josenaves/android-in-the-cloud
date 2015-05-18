@@ -60,18 +60,22 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            try {
+/*            try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
+            }*/
+
+            WeatherHelper helper = new WeatherHelper();
+            helper.getWeather();
+
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             txtStatus.setText(R.string.status_done);
-            progress.setVisibility(View.INVISIBLE);
+            progress.setVisibility(View.INVISIBLE);/**/
 
         }
     }
