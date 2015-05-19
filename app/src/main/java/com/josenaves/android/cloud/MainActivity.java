@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,9 +20,11 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Esta classe representa a única tela do aplicativo de previsão do tempo.
+ * @author josenaves
+ */
 public class MainActivity extends ActionBarActivity {
-    // AppCompatActivity --> Material Design guidelines
 
     private Button btRefresh;
     private TextView txtStatus;
@@ -35,10 +36,9 @@ public class MainActivity extends ActionBarActivity {
 
     private RecyclerView recyclerView;
 
-    private List<Weather> forecastList = new ArrayList<Weather>();
+    private List<ForecastWeather> forecastList = new ArrayList<ForecastWeather>();
 
-    private WeatherHelper helper = new WeatherHelper();
-
+    private ForecastWeatherHelper helper = new ForecastWeatherHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +82,9 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-
+    /**
+     * Classe responsável por invocar o webservice de previsão do tempo utilizando uma thread diferente da thread de UI
+     */
     class UpdateWeather extends AsyncTask<Void, Void, Void> {
 
         @Override

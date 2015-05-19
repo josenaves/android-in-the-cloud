@@ -10,7 +10,7 @@ import java.util.Date;
  * Esta classe representa a previsão do tempo para um determinado dia.
  * Created by josenaves on 5/17/15.
  */
-public class Weather {
+public class ForecastWeather {
 
     private static final SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -19,13 +19,13 @@ public class Weather {
     private double maxTemp;
     private double minTemp;
 
-    public Weather() {
+    public ForecastWeather() {
     }
 
-    public static Weather getFromJson(String json, int day) throws Exception {
-        Weather weather = new Weather();
-        weather.parseJson(json, day);
-        return weather;
+    public static ForecastWeather getFromJson(String json, int day) throws Exception {
+        ForecastWeather forecastWeather = new ForecastWeather();
+        forecastWeather.parseJson(json, day);
+        return forecastWeather;
     }
 
     private void parseJson(String json, int day) throws Exception {
@@ -78,7 +78,7 @@ public class Weather {
 
     @Override
     public String toString() {
-        return "Weather{" +
+        return "ForecastWeather{" +
                 "date='" + date + '\'' +
                 ", forecast='" + forecast + '\'' +
                 ", maxTemp=" + maxTemp +

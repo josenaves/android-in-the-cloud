@@ -13,11 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by josenaves on 5/17/15.
+ * Classe auxiliar que realiza a requisição ao webservice da OpenWeatherMap
+ * @author josenaves
  */
-public class WeatherHelper {
+public class ForecastWeatherHelper {
 
-    private static final String TAG = WeatherHelper.class.getSimpleName();
+    private static final String TAG = ForecastWeatherHelper.class.getSimpleName();
 
     public static final String API_ENDPOINT = "http://api.openweathermap.org/data/2.5/forecast/daily?q=sao+paulo&units=metric&cnt=3";
 
@@ -25,12 +26,12 @@ public class WeatherHelper {
      * Acessa o webservice do OpenWeatherMap para obter previsão do tempo.
      * @return String contendo o JSON com as informações
      */
-    public List<Weather> getWeather() {
+    public List<ForecastWeather> getWeather() {
         String jsonResult = null;
         HttpURLConnection urlConnection = null;
 
-        List<Weather> forecastList = new ArrayList<>();
-        Weather weather = null;
+        List<ForecastWeather> forecastList = new ArrayList<>();
+        ForecastWeather forecastWeather = null;
 
         try {
             URL url = new URL(API_ENDPOINT);
@@ -44,9 +45,9 @@ public class WeatherHelper {
 
 
             for (int i = 0; i < 3; i++) {
-                weather = Weather.getFromJson(jsonResult, i);
-                forecastList.add(weather);
-                Log.d(TAG, "Weather = " + weather);
+                forecastWeather = ForecastWeather.getFromJson(jsonResult, i);
+                forecastList.add(forecastWeather);
+                Log.d(TAG, "ForecastWeather = " + forecastWeather);
             }
 
         } catch (MalformedURLException e) {

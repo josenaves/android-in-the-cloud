@@ -14,15 +14,15 @@ import java.util.List;
  */
 public class RecyclerViewForecastAdapter extends RecyclerView.Adapter<RecyclerViewForecastAdapter.ForecastViewHolder> {
 
-    private List<Weather> weatherList;
+    private List<ForecastWeather> forecastWeatherList;
 
-    public RecyclerViewForecastAdapter(List<Weather> weatherList) {
-        this.weatherList = weatherList;
+    public RecyclerViewForecastAdapter(List<ForecastWeather> forecastWeatherList) {
+        this.forecastWeatherList = forecastWeatherList;
     }
 
     @Override
     public int getItemCount() {
-        return weatherList.size();
+        return forecastWeatherList.size();
     }
 
     @Override
@@ -34,10 +34,10 @@ public class RecyclerViewForecastAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onBindViewHolder(ForecastViewHolder personViewHolder, int i) {
-        personViewHolder.date.setText(weatherList.get(i).getDate());
-        personViewHolder.description.setText(weatherList.get(i).getForecast());
-        personViewHolder.maximum.setText(String.valueOf(weatherList.get(i).getMaxTemp()) + "\u00B0C");
-        personViewHolder.minimum.setText(String.valueOf(weatherList.get(i).getMinTemp()) + "\u00B0C");
+        personViewHolder.date.setText(forecastWeatherList.get(i).getDate());
+        personViewHolder.description.setText(forecastWeatherList.get(i).getForecast());
+        personViewHolder.maximum.setText(String.valueOf(forecastWeatherList.get(i).getMaxTemp()) + "\u00B0C");
+        personViewHolder.minimum.setText(String.valueOf(forecastWeatherList.get(i).getMinTemp()) + "\u00B0C");
     }
 
     @Override
@@ -45,9 +45,9 @@ public class RecyclerViewForecastAdapter extends RecyclerView.Adapter<RecyclerVi
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public void setWeather(List<Weather> list) {
-        weatherList.clear();
-        weatherList = list;
+    public void setWeather(List<ForecastWeather> list) {
+        forecastWeatherList.clear();
+        forecastWeatherList = list;
         notifyDataSetChanged();
     }
 
