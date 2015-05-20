@@ -1,10 +1,10 @@
 package com.josenaves.android.cloud;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.josenaves.android.cloud.model.Day;
+import com.josenaves.android.cloud.model.ForecastResponse;
+import com.josenaves.android.cloud.model.Temperature;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Esta classe representa a previsão do tempo para um determinado dia.
@@ -22,26 +22,17 @@ public class ForecastWeather {
     public ForecastWeather() {
     }
 
-    public static ForecastWeather getFromJson(String json, int day) throws Exception {
+    public static ForecastWeather getFromResponse(ForecastResponse response, int day) throws Exception {
         ForecastWeather forecastWeather = new ForecastWeather();
-        forecastWeather.parseJson(json, day);
+
+        Day dayAux = response.getList().get(day);
+        forecastWeather.date = SDF.format(dayAux.getDt() * 1000l);
+        Temperature temp = dayAux.getTemp();
+        forecastWeather.maxTemp = temp.getMax();
+        forecastWeather.minTemp = temp.getMin();
+        forecastWeather.forecast = dayAux.getWeather().get(0).getDescription();
+
         return forecastWeather;
-    }
-
-    private void parseJson(String json, int day) throws Exception {
-        JSONObject jsonObject = new JSONObject(json);
-        JSONArray array = jsonObject.getJSONArray("list");
-        JSONObject jsonDay = array.getJSONObject(day);
-
-        Long timeInMillis = Long.valueOf(jsonDay.getLong("dt")) * 1000l;
-        this.date = SDF.format(new Date(timeInMillis));
-
-        JSONObject jsonTemp = jsonDay.getJSONObject("temp");
-        this.maxTemp = jsonTemp.getDouble("max");
-        this.minTemp = jsonTemp.getDouble("min");
-
-        JSONArray jsonDescription = jsonDay.getJSONArray("weather");
-        this.forecast = jsonDescription.getJSONObject(0).getString("description");
     }
 
     public String getDate() {
