@@ -1,9 +1,5 @@
 package com.josenaves.android.cloud;
 
-import com.josenaves.android.cloud.model.Day;
-import com.josenaves.android.cloud.model.ForecastResponse;
-import com.josenaves.android.cloud.model.Temperature;
-
 import java.text.SimpleDateFormat;
 
 /**
@@ -20,19 +16,6 @@ public class ForecastWeather {
     private double minTemp;
 
     public ForecastWeather() {
-    }
-
-    public static ForecastWeather getFromResponse(ForecastResponse response, int day) throws Exception {
-        ForecastWeather forecastWeather = new ForecastWeather();
-
-        Day dayAux = response.getList().get(day);
-        forecastWeather.date = SDF.format(dayAux.getDt() * 1000l);
-        Temperature temp = dayAux.getTemp();
-        forecastWeather.maxTemp = temp.getMax();
-        forecastWeather.minTemp = temp.getMin();
-        forecastWeather.forecast = dayAux.getWeather().get(0).getDescription();
-
-        return forecastWeather;
     }
 
     public String getDate() {

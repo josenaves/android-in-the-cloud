@@ -2,13 +2,15 @@ package com.josenaves.android.cloud;
 
 import android.util.Log;
 
-import com.josenaves.android.cloud.model.ForecastResponse;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.josenaves.android.cloud.json.ForecastWeatherDeserializer;
 import com.josenaves.android.cloud.service.ForecastService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.RestAdapter;
+import retrofit.converter.GsonConverter;
 
 /**
  * Classe auxiliar que realiza a requisição ao webservice da OpenWeatherMap
@@ -25,24 +27,24 @@ public class ForecastWeatherHelper {
      * @return Lista de objetos ForecastWeater contendo informações do tempo.
      */
     public List<ForecastWeather> getWeather() {
-        List<ForecastWeather> forecastList = new ArrayList<>();
-        ForecastWeather forecastWeather;
+        List<ForecastWeather> forecastList = null;
 
         try {
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(ForecastWeather.class, new ForecastWeatherDeserializer())
+                    .create();
+
+            GsonConverter converter = new GsonConverter(gson);
+
             RestAdapter restAdapter = new RestAdapter.Builder()
                     .setEndpoint(API_ENDPOINT)
+                    .setConverter(converter)
                     .build();
 
             ForecastService service = restAdapter.create(ForecastService.class);
-            ForecastResponse response = service.getForecast("sao+paulo", "metric", 3);
+            forecastList = service.getForecast("sao+paulo", "metric", 3);
 
-            Log.d(TAG, "response = " + response);
-
-            for (int i = 0; i < 3; i++) {
-                forecastWeather = ForecastWeather.getFromResponse(response, i);
-                forecastList.add(forecastWeather);
-                Log.d(TAG, "ForecastWeather = " + forecastWeather);
-            }
+            Log.d(TAG, "forecastList = " + forecastList);
 
         } catch (Exception e) {
             Log.e(TAG, "Error ", e);
