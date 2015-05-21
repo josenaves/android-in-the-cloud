@@ -3,7 +3,6 @@ package com.josenaves.android.cloud;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,16 +16,29 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.josenaves.android.cloud.json.ForecastResponseDeserializer;
+import com.josenaves.android.cloud.model.ForecastResponse;
 import com.josenaves.android.cloud.model.ForecastWeather;
+import com.josenaves.android.cloud.service.ForecastService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.converter.GsonConverter;
 
 /**
  * Esta classe representa a única tela do aplicativo de previsão do tempo.
  * @author josenaves
  */
 public class MainActivity extends ActionBarActivity {
+
+    public static final String API_ENDPOINT = "http://api.openweathermap.org";
 
     private Button btRefresh;
     private TextView txtStatus;
@@ -62,9 +74,27 @@ public class MainActivity extends ActionBarActivity {
         btRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new UpdateWeather().execute();
+
+                txtStatus.setText(R.string.status_running);
+                progress.setVisibility(View.VISIBLE);
+
+                getService().getForecast("sao+paulo", "metric", 3, new Callback<ForecastResponse>() {
+                    @Override
+                    public void success(ForecastResponse forecastResponse, Response response) {
+                        adapter.setWeather(forecastResponse.getForecastList());
+                        txtStatus.setText(R.string.status_done);
+                        progress.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        txtStatus.setText(R.string.status_error);
+                        progress.setVisibility(View.INVISIBLE);
+                    }
+                });
             }
         });
+
         if (!isOnline()) {
             btRefresh.setEnabled(false);
             txtStatus.setText(R.string.no_connectivity);
@@ -83,30 +113,20 @@ public class MainActivity extends ActionBarActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    private ForecastService getService() {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(ForecastResponse.class, new ForecastResponseDeserializer())
+                .create();
 
-    /**
-     * Classe responsável por invocar o webservice de previsão do tempo utilizando uma thread diferente da thread de UI
-     */
-    class UpdateWeather extends AsyncTask<Void, Void, Void> {
+        GsonConverter converter = new GsonConverter(gson);
 
-        @Override
-        protected void onPreExecute() {
-            txtStatus.setText(R.string.status_running);
-            progress.setVisibility(View.VISIBLE);
-        }
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(API_ENDPOINT)
+                .setConverter(converter)
+                .setLogLevel(RestAdapter.LogLevel.FULL)  // habilita logging
+                .build();
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            forecastList = helper.getWeather();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            adapter.setWeather(forecastList);
-            txtStatus.setText(R.string.status_done);
-            progress.setVisibility(View.INVISIBLE);
-        }
+        return restAdapter.create(ForecastService.class);
     }
 
     /**

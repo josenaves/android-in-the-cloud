@@ -11,7 +11,10 @@ import com.josenaves.android.cloud.service.ForecastService;
 
 import java.util.List;
 
+import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
 
 /**
@@ -45,7 +48,19 @@ public class ForecastWeatherHelper {
                     .build();
 
             ForecastService service = restAdapter.create(ForecastService.class);
-            forecastResponse = service.getForecast("sao+paulo", "metric", 3);
+
+            service.getForecast("sao+paulo", "metric", 3, new Callback<ForecastResponse>() {
+                @Override
+                public void success(ForecastResponse forecastResponse, Response response) {
+
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+
+                }
+            });
+
         } catch (Exception e) {
             Log.e(TAG, "Error ", e);
         }
