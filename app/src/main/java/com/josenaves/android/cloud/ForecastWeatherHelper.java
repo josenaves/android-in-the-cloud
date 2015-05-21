@@ -4,7 +4,9 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.josenaves.android.cloud.json.ForecastWeatherDeserializer;
+import com.josenaves.android.cloud.json.ForecastResponseDeserializer;
+import com.josenaves.android.cloud.model.ForecastResponse;
+import com.josenaves.android.cloud.model.ForecastWeather;
 import com.josenaves.android.cloud.service.ForecastService;
 
 import java.util.List;
@@ -27,11 +29,11 @@ public class ForecastWeatherHelper {
      * @return Lista de objetos ForecastWeater contendo informações do tempo.
      */
     public List<ForecastWeather> getWeather() {
-        List<ForecastWeather> forecastList = null;
+        ForecastResponse forecastResponse = null;
 
         try {
             Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(ForecastWeather.class, new ForecastWeatherDeserializer())
+                    .registerTypeAdapter(ForecastResponse.class, new ForecastResponseDeserializer())
                     .create();
 
             GsonConverter converter = new GsonConverter(gson);
@@ -42,14 +44,14 @@ public class ForecastWeatherHelper {
                     .build();
 
             ForecastService service = restAdapter.create(ForecastService.class);
-            forecastList = service.getForecast("sao+paulo", "metric", 3);
+            forecastResponse = service.getForecast("sao+paulo", "metric", 3);
 
-            Log.d(TAG, "forecastList = " + forecastList);
+            Log.d(TAG, "response = " + forecastResponse);
 
         } catch (Exception e) {
             Log.e(TAG, "Error ", e);
         }
 
-        return forecastList;
+        return forecastResponse.getForecastList();
     }
 }

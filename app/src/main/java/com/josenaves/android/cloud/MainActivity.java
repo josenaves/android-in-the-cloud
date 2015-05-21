@@ -17,6 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.josenaves.android.cloud.model.ForecastWeather;
+
 import java.util.ArrayList;
 import java.util.List;
 

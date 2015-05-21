@@ -1,4 +1,4 @@
-package com.josenaves.android.cloud;
+package com.josenaves.android.cloud.model;
 
 import java.text.SimpleDateFormat;
 
@@ -11,6 +11,7 @@ public class ForecastWeather {
     private static final SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy");
 
     private String date;
+
     private String forecast;
     private double maxTemp;
     private double minTemp;
