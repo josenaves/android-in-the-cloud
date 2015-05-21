@@ -41,13 +41,11 @@ public class ForecastWeatherHelper {
             RestAdapter restAdapter = new RestAdapter.Builder()
                     .setEndpoint(API_ENDPOINT)
                     .setConverter(converter)
+                    .setLogLevel(RestAdapter.LogLevel.FULL)  // habilita logging
                     .build();
 
             ForecastService service = restAdapter.create(ForecastService.class);
             forecastResponse = service.getForecast("sao+paulo", "metric", 3);
-
-            Log.d(TAG, "response = " + forecastResponse);
-
         } catch (Exception e) {
             Log.e(TAG, "Error ", e);
         }
