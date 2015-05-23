@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Callback;
+import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -38,7 +40,7 @@ import retrofit.converter.GsonConverter;
  */
 public class MainActivity extends ActionBarActivity {
 
-    public static final String API_ENDPOINT = "http://api.openweathermap.org";
+    public static final String API_ENDPOINT = "https://android-node.herokuapp.com";
 
     private Button btRefresh;
     private TextView txtStatus;
@@ -121,10 +123,23 @@ public class MainActivity extends ActionBarActivity {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(API_ENDPOINT)
                 .setConverter(converter)
+                .setRequestInterceptor(basicAuth("android", "cloud"))
                 .setLogLevel(RestAdapter.LogLevel.FULL)  // habilita logging
                 .build();
 
         return restAdapter.create(ForecastService.class);
+    }
+
+    private RequestInterceptor basicAuth(String user, String password) {
+        final String credentials = user + ":" + password;
+        return new RequestInterceptor() {
+            @Override
+            public void intercept(RequestFacade request) {
+                String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                request.addHeader("Accept", "application/json");
+                request.addHeader("Authorization", basic);
+            }
+        };
     }
 
     /**
