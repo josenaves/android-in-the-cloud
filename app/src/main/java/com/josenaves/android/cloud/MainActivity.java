@@ -52,8 +52,6 @@ public class MainActivity extends ActionBarActivity {
 
     private List<ForecastWeather> forecastList = new ArrayList<ForecastWeather>();
 
-    private ForecastWeatherHelper helper = new ForecastWeatherHelper();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

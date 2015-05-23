@@ -1,14 +1,10 @@
 package com.josenaves.android.cloud.model;
 
-import java.text.SimpleDateFormat;
-
 /**
  * Esta classe representa a previsão do tempo para um determinado dia.
  * Created by josenaves on 5/17/15.
  */
 public class ForecastWeather {
-
-    private static final SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy");
 
     private String date;
 
