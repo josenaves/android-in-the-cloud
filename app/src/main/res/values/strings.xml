@@ -8,6 +8,7 @@
     <string name="status_ready">Pronto.</string>
     <string name="status_running">Obtendo dados da nuvem...</string>
     <string name="status_done">Atualizado :)</string>
+    <string name="status_authentication_error">Usuário ou senha inválidos !</string>
     <string name="status_error">Algo muito ruim aconteceu :(</string>
 
 

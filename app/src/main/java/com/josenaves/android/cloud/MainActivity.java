@@ -88,7 +88,12 @@ public class MainActivity extends ActionBarActivity {
 
                     @Override
                     public void failure(RetrofitError error) {
-                        txtStatus.setText(R.string.status_error);
+                        if (error.getResponse().getStatus() == 401) {
+                            txtStatus.setText(R.string.status_authentication_error);
+                        }
+                        else {
+                            txtStatus.setText(R.string.status_error);
+                        }
                         progress.setVisibility(View.INVISIBLE);
                     }
                 });
